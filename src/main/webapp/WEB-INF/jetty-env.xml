@@ -1,0 +1,19 @@
+<Configure  class="org.eclipse.jetty.webapp.WebAppContext">
+    <New id="DSTest" class="org.eclipse.jetty.plus.jndi.Resource">
+     <Arg></Arg>
+     <Arg>jdbc/ds</Arg>
+     <Arg>
+       <New class="com.zaxxer.hikari.HikariDataSource">
+         <Arg>
+            <New class="com.zaxxer.hikari.HikariConfig">
+               <Set name="dataSourceClassName">org.sqlite.SQLiteDataSource</Set>
+               <Call name="addDataSourceProperty">
+                  <Arg>url</Arg>
+                  <Arg>jdbc:sqlite:src/main/db/test.db</Arg>
+               </Call>
+            </New>
+         </Arg>
+      </New>
+    </Arg>
+  </New>
+</Configure>
