@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.app.controller.CreateCourseController.Fields;
-import com.app.entity.feedback.TemporaryFeedback;
+import com.app.entity.feedback.Feedback;
 import com.github.manliogit.javatags.element.Element;
 
 public class FormSeminarLayout {
@@ -54,7 +54,7 @@ public class FormSeminarLayout {
         Collection<Element> result = new ArrayList<>();
         for (Fields field : Fields.values()) {
             if (_feedbacks.isEmpty()) {
-                result.add(new TemporaryFeedback(field.toString().toLowerCase(), field._label)
+                result.add(new Feedback(field.toString().toLowerCase(), field._label)
                     .getNeutralFeedback());
             } else {
                 result.add(getProperFeedback(field));
@@ -75,9 +75,9 @@ public class FormSeminarLayout {
 
     private Element getProperFeedback(Fields field) {
         return (_feedbacks.get(field).equals(null))
-            ? new TemporaryFeedback(field.toString().toLowerCase(), field._label)
+            ? new Feedback(field.toString().toLowerCase(), field._label)
                 .getPositiveFeedback()
-            : new TemporaryFeedback(field.toString().toLowerCase(), field._label)
+            : new Feedback(field.toString().toLowerCase(), field._label)
                 .getNegativeFeedback();
     }
 
