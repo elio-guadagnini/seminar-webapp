@@ -7,7 +7,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
+import com.app.controller.CreateCourseController.Fields;
 import com.app.entity.date.DateConverter;
 import com.app.entity.db.SeminarDbUtil;
 import com.app.entity.seminar.Course;
@@ -24,22 +26,11 @@ import com.app.entity.validation.Validation;
 import com.app.entity.validation.Validator;
 import com.app.view.FormSeminarLayout;
 
-public class CreateCourseController implements Controller {
-
-    public enum Fields {
-        NAME("text"), DESCRIPTION("text"), SEATS("number"), LOCATION("text"), DATE("date");
-
-        public final String _label;
-
-        private Fields(String label) {
-            _label = label;
-        }
-    }
+public class EditCourseController implements Controller {
 
     @Override
     public boolean handles(String route) {
-        return ("/course/create".equals(route)
-            || "/course/create/".equals(route));
+        return Pattern.matches("\\/course\\/\\d*", route);
     }
 
     @Override
@@ -126,4 +117,5 @@ public class CreateCourseController implements Controller {
         };
         return result.entrySet().iterator();
     }
+
 }

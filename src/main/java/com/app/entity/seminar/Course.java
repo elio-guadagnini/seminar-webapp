@@ -1,18 +1,19 @@
 package com.app.entity.seminar;
 
-import java.util.Calendar;
+import java.text.ParseException;
+import java.util.Date;
+
+import com.app.entity.date.DateConverter;
 
 public class Course {
 
 	private String _name, _description;
-	private int _id;
-	private final Calendar _startingDate;
+	private final Date _startingDate;
 
-	public Course(String name, int id, String description, Calendar startingDate) {
+	public Course(String name, String description, Date date) {
 		_name = name;
-		_id = id;
 		_description = description;
-		_startingDate = startingDate;
+		_startingDate = date;
 	}
 
 	public String getName() {
@@ -21,14 +22,6 @@ public class Course {
 
 	public void setName(String _name) {
 		this._name = _name;
-	}
-
-	public int getId() {
-		return _id;
-	}
-
-	public void setId(int id) {
-		this._id = id;
 	}
 
 	public String getDescription() {
@@ -40,18 +33,17 @@ public class Course {
 	}
 
 	public String getDate() {
-	    return _startingDate.get(Calendar.DAY_OF_MONTH) + "/"
-                           + _startingDate.get(Calendar.MONTH) + "/"
-                           + _startingDate.get(Calendar.YEAR);
-	}
-
-	public String getFullName() {
-		return _name+" "+_id;
+	    try {
+            return new DateConverter().convertFromDateToString(_startingDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
 	}
 
 	@Override
 	public String toString() {
-	    return getFullName() + " " + _description + " " + getDate();
+	    return _name + " " + _description + " " + getDate();
 	}
 
 }

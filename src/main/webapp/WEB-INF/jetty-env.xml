@@ -9,7 +9,7 @@
                <Set name="dataSourceClassName">org.sqlite.SQLiteDataSource</Set>
                <Call name="addDataSourceProperty">
                   <Arg>url</Arg>
-                  <Arg>jdbc:sqlite:src/main/db/test.db</Arg>
+                  <Arg>jdbc:sqlite:src/main/db/seminar.db</Arg>
                </Call>
             </New>
          </Arg>

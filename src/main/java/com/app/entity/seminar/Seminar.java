@@ -22,7 +22,7 @@ public class Seminar {
 	}
 
 	public String getName() {
-		return _course.getFullName();
+		return _course.getName();
 	}
 
 	public void setName(String name) {

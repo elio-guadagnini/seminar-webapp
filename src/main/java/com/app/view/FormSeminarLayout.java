@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.app.controller.CreateCourseController.Fields;
-import com.app.entity.feedback.Feedback;
+import com.app.entity.feedback.HtmlFeedback;
 import com.github.manliogit.javatags.element.Element;
 
 public class FormSeminarLayout {
@@ -54,7 +54,7 @@ public class FormSeminarLayout {
         Collection<Element> result = new ArrayList<>();
         for (Fields field : Fields.values()) {
             if (_feedbacks.isEmpty()) {
-                result.add(new Feedback(field.toString().toLowerCase(), field._label)
+                result.add(new HtmlFeedback(field.toString().toLowerCase(), field._label)
                     .getNeutralFeedback());
             } else {
                 result.add(getProperFeedback(field));
@@ -74,11 +74,18 @@ public class FormSeminarLayout {
     }
 
     private Element getProperFeedback(Fields field) {
-        return (_feedbacks.get(field).equals(null))
-            ? new Feedback(field.toString().toLowerCase(), field._label)
-                .getPositiveFeedback()
-            : new Feedback(field.toString().toLowerCase(), field._label)
-                .getNegativeFeedback();
+        try {
+            if (!_feedbacks.get(field).equals(null)) {
+                return new HtmlFeedback(field.toString().toLowerCase(), field._label, _feedbacks.get(field))
+                    .getNegativeFeedback();
+            } else {
+                return new HtmlFeedback(field.toString().toLowerCase(), field._label)
+                    .getPositiveFeedback();
+            }
+        } catch (NullPointerException e) {
+            return new HtmlFeedback(field.toString().toLowerCase(), field._label)
+                .getPositiveFeedback();
+        }
     }
 
 }

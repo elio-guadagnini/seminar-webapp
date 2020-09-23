@@ -23,9 +23,10 @@ public class Servlet extends HttpServlet {
 //	_ds = new SQLiteConnectionPoolDataSource();
 //	_ds.setUrl("jdbc:sqlite:/path");
 
-//	private HikariDataSource _ds;
-//  _ds = new HikariDataSource();
-//	_ds.setJdbcUrl("jdbc:sqlite:/path");
+//	private HikariDataSource _dsHikari;
+//	_dsHikari = new HikariDataSource();
+//  _dsHikari.setJdbcUrl("jdbc:sqlite:/course");
+
 
 	private DataSource _ds;
 	private final Seminars _seminars = new Seminars();
@@ -34,7 +35,7 @@ public class Servlet extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		try {
-			_ds = (DataSource)new InitialContext().lookup("java:/comp/env/jdbc/ds");
+		    _ds = (DataSource)new InitialContext().lookup("java:/comp/env/jdbc/ds");
 		} catch (NamingException e) {
 			throw new RuntimeException(e);
 		}
@@ -43,7 +44,7 @@ public class Servlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		for(Controller c : new ControllerFactory().create()){
-			if(c.handles(req.getRequestURI())){
+		    if(c.handles(req.getRequestURI())){
 				try {
 					connection = _ds.getConnection();
 					connection.setAutoCommit(false);
@@ -51,6 +52,7 @@ public class Servlet extends HttpServlet {
 					connection.commit();
 					return;
 				} catch (Exception e) {
+				    e.printStackTrace();
 				    throwInternalServerError(req, resp, e);
 				} finally {
 				    try {

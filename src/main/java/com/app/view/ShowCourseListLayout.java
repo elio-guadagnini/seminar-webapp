@@ -2,23 +2,22 @@ package com.app.view;
 
 import static com.github.manliogit.javatags.lang.HtmlHelper.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
-import com.app.entity.seminar.Seminar;
-import com.app.entity.seminar.Seminars;
 import com.github.manliogit.javatags.element.Element;
 
 public class ShowCourseListLayout {
 
-    private final Seminars _seminars;
+    private final ResultSet _seminars;
 
-    public ShowCourseListLayout(Seminars seminars) {
+    public ShowCourseListLayout(ResultSet seminars) {
         _seminars = seminars;
     }
 
-    public Element build() {
+    public Element build() throws SQLException {
         return html5(
             head(
                 meta(attr("charset -> utf-8")),
@@ -99,13 +98,11 @@ public class ShowCourseListLayout {
                                 table(attr("class -> table table-striped"),
                                     thead(
                                         tr(
-                                            th("id"),
                                             th("name"),
                                             th("description"),
                                             th("location"),
                                             th("totalSeats"),
-                                            th("start"),
-                                            th("students")
+                                            th("start")
                                             )
                                         ),
                                     tbody(
@@ -140,25 +137,39 @@ public class ShowCourseListLayout {
         );
     }
 
-    private Iterable<Element> getHtmlSeminars() {
+    private Iterable<Element> getHtmlSeminars() throws SQLException {
         Collection<Element> htmlSeminars = new ArrayList<>();
 
-        Iterator<Seminar> iter = _seminars.getIterator();
-        while (iter.hasNext()) {
-            Seminar seminar = iter.next();
-
+        while (_seminars.next()) {
             htmlSeminars.add(
                 tr(
-                    td(String.valueOf(seminar.getCourse().getId())),
-                    td(seminar.getCourse().getName()),
-                    td(seminar.getDescription()),
-                    td(seminar.getLocation()),
-                    td(String.valueOf(seminar.getSeatsLeft())),
-                    td(seminar.getCourse().getDate()),
-                    td(seminar.getStudentList().toString())
+                    td(
+                        a(attr("href -> /course/"+_seminars.getString(1)),
+                            _seminars.getString(2)
+                            )
+                        ),
+                    td(_seminars.getString(3)),
+                    td(_seminars.getString(4)),
+                    td(_seminars.getString(5)),
+                    td(_seminars.getString(6))
                 )
             );
         }
+//        Iterator<Seminar> iter = _seminars.getIterator();
+//        while (iter.hasNext()) {
+//            Seminar seminar = iter.next();
+//
+//            htmlSeminars.add(
+//                tr(
+//                    td(seminar.getCourse().getName()),
+//                    td(seminar.getDescription()),
+//                    td(seminar.getLocation()),
+//                    td(String.valueOf(seminar.getSeatsLeft())),
+//                    td(seminar.getCourse().getDate()),
+//                    td(seminar.getStudentList().toString())
+//                    )
+//                );
+//        }
         return htmlSeminars;
     }
 

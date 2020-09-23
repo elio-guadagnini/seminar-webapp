@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.app.controller.Controller;
 import com.app.controller.CreateCourseController;
+import com.app.controller.EditCourseController;
 import com.app.controller.InternalServerErrorController;
 import com.app.controller.NotFoundController;
 import com.app.controller.ShowCourseListController;
@@ -18,6 +19,7 @@ public class ControllerFactory {
             asList(
                 new ShowCourseListController(),
                 new CreateCourseController(),
+                new EditCourseController(),
                 new NotFoundController()
             ));
     }
