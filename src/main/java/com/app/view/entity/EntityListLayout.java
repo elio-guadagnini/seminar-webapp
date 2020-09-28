@@ -1,4 +1,4 @@
-package com.app.view;
+package com.app.view.entity;
 
 import static com.github.manliogit.javatags.lang.HtmlHelper.*;
 
@@ -9,11 +9,15 @@ import java.util.Collection;
 
 import com.github.manliogit.javatags.element.Element;
 
-public class ShowCourseListLayout {
+public class EntityListLayout {
 
+    private final String _title;
+    private final String _baseAction;
     private final ResultSet _seminars;
 
-    public ShowCourseListLayout(ResultSet seminars) {
+    public EntityListLayout(String title, String baseAction, ResultSet seminars) {
+        _title = title;
+        _baseAction = baseAction;
         _seminars = seminars;
     }
 
@@ -24,7 +28,7 @@ public class ShowCourseListLayout {
                 meta(attr("http-equiv -> X-UA-Compatible", "content -> IE=edge")),
                 meta(attr("name -> viewport", "content -> width=device-width, initial-scale=1")),
                 title(
-                    "Courses"
+                    _title
                 ),
                 text("<!-- Bootstrap core CSS -->"),
                 link(attr("href -> /css/bootstrap.min.css?v=1.0.0", "rel -> stylesheet", "media -> screen")),
@@ -38,7 +42,7 @@ public class ShowCourseListLayout {
                     div(attr("class -> container"),
                         div(attr("class -> navbar-header"),
                             a(attr("href -> /", "class -> navbar-brand"),
-                                "Seminar"
+                                _title
                                 ),
                             button(attr("class -> navbar-toggle", "type -> button",
                                 "data-toggle -> collapse", "data-target -> #navbar-main"),
@@ -76,20 +80,20 @@ public class ShowCourseListLayout {
                         div(attr("class -> row"),
                             div(attr("class -> col-lg-8 col-md-7 col-sm-6"),
                                 h1(
-                                    "Seminar"
+                                    _title
                                     ),
                                 p(attr("class -> lead"),
-                                    "Manage your courses!"
+                                    "Manage your "+_title+"s!"
                                     )
                                 )
                             ),
                         div(attr("class -> row"),
                             div(attr("class -> col-lg-2 col-md-2 col-sm-3"),
                                 div(attr("class -> list-group table-of-contents"),
-                                    a(attr("class -> list-group-item", "href -> /course"),
+                                    a(attr("class -> list-group-item", "href -> "+_baseAction),
                                         "List"
                                         ),
-                                    a(attr("class -> list-group-item", "href -> /course/create"),
+                                    a(attr("class -> list-group-item", "href -> "+_baseAction+"/create"),
                                         "Create"
                                         )
                                     )
@@ -144,32 +148,23 @@ public class ShowCourseListLayout {
             htmlSeminars.add(
                 tr(
                     td(
-                        a(attr("href -> /course/"+_seminars.getString(1)),
+                        a(attr("href -> "+_baseAction+"/"+_seminars.getString(1)),
                             _seminars.getString(2)
                             )
                         ),
                     td(_seminars.getString(3)),
                     td(_seminars.getString(4)),
                     td(_seminars.getString(5)),
-                    td(_seminars.getString(6))
+                    td(_seminars.getString(6)),
+                    td(
+                        a(attr("href -> "+_baseAction+"/delete/"+_seminars.getString(1), "class -> btn btn-primary btn-xs",
+                            "role -> button", "aria-pressed -> true"),
+                            "delete"
+                            )
+                        )
                 )
             );
         }
-//        Iterator<Seminar> iter = _seminars.getIterator();
-//        while (iter.hasNext()) {
-//            Seminar seminar = iter.next();
-//
-//            htmlSeminars.add(
-//                tr(
-//                    td(seminar.getCourse().getName()),
-//                    td(seminar.getDescription()),
-//                    td(seminar.getLocation()),
-//                    td(String.valueOf(seminar.getSeatsLeft())),
-//                    td(seminar.getCourse().getDate()),
-//                    td(seminar.getStudentList().toString())
-//                    )
-//                );
-//        }
         return htmlSeminars;
     }
 

@@ -10,16 +10,16 @@ import com.github.manliogit.javatags.element.Element;
 public class HtmlFeedback {
 
     private final String _fieldName;
-    private final String _fieldType;
+    private final String _fieldNameValue;
     private final String _errorMessage;
 
-    public HtmlFeedback(String htmlFieldName, String htmlFieldType) {
-        this(htmlFieldName, htmlFieldType, null);
+    public HtmlFeedback(String htmlFieldName, String htmlFieldValue) {
+        this(htmlFieldName, htmlFieldValue, null);
     }
 
-    public HtmlFeedback(String htmlFieldName, String htmlFieldType, String errorMessage) {
+    public HtmlFeedback(String htmlFieldName, String htmlFieldValue, String errorMessage) {
         _fieldName = htmlFieldName;
-        _fieldType = htmlFieldType;
+        _fieldNameValue = htmlFieldValue;
         _errorMessage = errorMessage;
     }
 
@@ -29,9 +29,9 @@ public class HtmlFeedback {
                 label(attr("for -> " + _fieldName, "class -> col-sm-2 control-label"),
                     _fieldName),
                 div(attr("class -> col-sm-10"),
-                    input(attr("type -> " + _fieldType, "class -> form-control",
+                    input(attr("type -> text", "class -> form-control",
                         "id -> " + _fieldName, "name -> " + _fieldName,
-                        "placeholder -> Course " + _fieldName, "value -> " + _fieldName,
+                        "placeholder -> Course " + _fieldName, "value -> " + _fieldNameValue,
                         "aria-describedby -> " + _fieldName + "Status")
                         )
                     )
@@ -44,9 +44,9 @@ public class HtmlFeedback {
                     label(attr("for -> " + _fieldName, "class -> col-sm-2 control-label"),
                         _fieldName),
                     div(attr("class -> col-sm-10"),
-                        input(attr("type -> " + _fieldType, "class -> form-control",
+                        input(attr("type -> text", "class -> form-control",
                             "id -> " + _fieldName, "name -> " + _fieldName,
-                            "placeholder -> Course " + _fieldName, "value -> " + _fieldName,
+                            "placeholder -> Course " + _fieldName, "value -> " + _fieldNameValue,
                             "aria-describedby -> " + _fieldName + "Status")
                             ),
                         span(attr("class -> glyphicon " + glyphicon + " form-control-feedback",

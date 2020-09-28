@@ -1,7 +1,9 @@
 package com.app.entity.seminar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class Seminar {
 
@@ -65,6 +67,14 @@ public class Seminar {
 
 	public Collection<Enrolment> getEnrolments() {
 	    return _enrolments;
+	}
+
+	public List<String> getParams() {
+	    return Arrays.asList(_course.getName(),
+	                         _course.getDescription(),
+	                         _location,
+	                         String.valueOf(_availableSeats),
+	                         _course.getDate());
 	}
 
 	public ArrayList<String> getStudentList() {

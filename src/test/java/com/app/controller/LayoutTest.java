@@ -11,7 +11,7 @@ import org.junit.Test;
 public class LayoutTest {
 
     @Test
-    public void html() throws Exception {
+    public void html() {
 
         XPath xPath = XPathFactory.newInstance().newXPath();
 

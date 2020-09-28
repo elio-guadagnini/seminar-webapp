@@ -29,7 +29,7 @@ public class NotFoundLayout {
                             "404 Not Found"
                         ),
                         div(attr("class -> error-details"),
-                            "Sorry, amd error as occured, Requested page not found!"
+                            "Sorry, an error has occured, Requested page not found!"
                         )
                     )
                 )

@@ -1,4 +1,4 @@
-package com.app.entity.date;
+package com.app.converter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -15,14 +15,23 @@ public class DateConverter {
         return cal;
     }
 
-    public Date convertFromStringToDate(String stringDate) throws ParseException {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        return df.parse(stringDate);
+    public Date convertFromStringToDate(String date) throws ParseException {
+        String result = removeDifferences(date);
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        return df.parse(result);
     }
 
-    public String convertFromDateToString(Date date) throws ParseException {
+    public String convertFromDateToString(Date date) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         return df.format(date);
+    }
+
+    private String removeDifferences(String date) {
+        if (date.contains("/") || date.contains("-")) {
+            date = date.replace("/", ".");
+            date = date.replace("-", ".");
+        }
+        return date;
     }
 
 }

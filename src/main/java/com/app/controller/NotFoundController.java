@@ -1,6 +1,5 @@
 package com.app.controller;
 
-import com.app.entity.seminar.Seminars;
 import com.app.view.NotFoundLayout;
 
 public class NotFoundController implements Controller {
@@ -11,7 +10,7 @@ public class NotFoundController implements Controller {
     }
 
     @Override
-    public void execute(Context context, Seminars seminars) throws Exception {
+    public void execute(Context context) throws Exception {
         context.response().setContentType("text/html");
         context.response().setCharacterEncoding("UTF-8");
 

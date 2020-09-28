@@ -9,6 +9,8 @@ import com.app.controller.Context;
 
 public class CrudOperations implements CrudInterface {
 
+    private static final String REGEX = ",";
+    private static final String FURTHER_REGEX = "\\s*->\\s*";
     private PreparedStatement _pstmt;
 
     public CrudOperations() {
@@ -41,5 +43,41 @@ public class CrudOperations implements CrudInterface {
         _pstmt.executeUpdate();
     }
 
+    @Override
+    public String getParamsAsProperString(String params) {
+        return (checkInputs(params))
+            ? render(params.split(REGEX))
+            : "1=1";
+    }
+
+    private String render(String[] split) {
+        String result = "";
+        for (String element : split) {
+            String[] singleSet = element.split(FURTHER_REGEX);
+            result += valueAt(singleSet, 0) + "=" + "'" + valueAt(singleSet, 1) + "'" + ", ";
+        }
+        return result.trim().substring(0, result.trim().length()-1);
+    }
+
+    private String valueAt(String[] values, int index){
+        try{
+            return values[index];
+        } catch(ArrayIndexOutOfBoundsException e){
+            return "";
+        }
+    }
+
+    private boolean checkInputs(String...args) {
+        for (String element : args) {
+            if (isBlank(element)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isBlank(String string) {
+        return string == null || string.trim().isEmpty();
+    }
 
 }

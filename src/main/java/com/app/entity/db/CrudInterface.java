@@ -16,4 +16,6 @@ public interface CrudInterface {
 
     public void update(Context context, String sql) throws SQLException;
 
+    public String getParamsAsProperString(String params);
+
 }

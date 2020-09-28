@@ -10,21 +10,19 @@ public class DateFormatValidation implements Validation {
 
     @Override
     public boolean check() {
-        return (dateCondition())
-            ? false
-            : true;
-    }
-
-    private boolean dateCondition() {
-        if (_parameter.contains("/") || _parameter.contains("-")) {
-            _parameter.replace("/", ".");
-            _parameter.replace("-", ".");
-        }
-        return ((_parameter.substring(0, 2).length() == 2)
-                && (_parameter.substring(2, 4).length() == 2)
-                && (_parameter.substring(4, _parameter.length()).length() == 4))
+        return (formatCondition() && characterCondition())
             ? true
             : false;
+    }
+
+    private boolean formatCondition() {
+        return ((_parameter.substring(0, 2).length() == 2)
+                && (_parameter.substring(3, 5).length() == 2)
+                && (_parameter.substring(6, _parameter.length()).length() == 4));
+    }
+
+    private boolean characterCondition() {
+        return !_parameter.matches(".*[a-zA-Z]+.*");
     }
 
     @Override

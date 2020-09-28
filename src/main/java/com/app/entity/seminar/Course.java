@@ -1,9 +1,8 @@
 package com.app.entity.seminar;
 
-import java.text.ParseException;
 import java.util.Date;
 
-import com.app.entity.date.DateConverter;
+import com.app.converter.DateConverter;
 
 public class Course {
 
@@ -33,12 +32,7 @@ public class Course {
 	}
 
 	public String getDate() {
-	    try {
-            return new DateConverter().convertFromDateToString(_startingDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
+	    return new DateConverter().convertFromDateToString(_startingDate);
 	}
 
 	@Override
