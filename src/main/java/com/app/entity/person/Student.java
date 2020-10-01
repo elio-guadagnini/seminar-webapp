@@ -1,23 +1,22 @@
 package com.app.entity.person;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Student extends Person {
 
+    public final static String NAME = "name";
+    public final static String SURNAME = "surname";
+    public final static List<String> FIELDS = Arrays.asList(NAME, SURNAME);
+
 	public Student(String name, String surname) {
-		super(name, surname);
+	    super(name, surname);
 	}
 
-	@Override
-	public int hashCode() {
-	    final int prime = 31;
-	    int result = 1;
-	    result = prime * result + ((super.getName() == null) ? 0 : super.getName().hashCode());
-	    result = prime * result + ((super.getSurname() == null) ? 0 : super.getSurname().hashCode());
-	    return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return hashCode() == obj.hashCode();
-	}
+	public List<String> getValues() {
+        return Arrays.asList(
+            _name,
+            _surname);
+    }
 
 }

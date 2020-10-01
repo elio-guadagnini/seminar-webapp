@@ -2,26 +2,30 @@ package com.app.view.entity;
 
 import static com.github.manliogit.javatags.lang.HtmlHelper.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.github.manliogit.javatags.element.Element;
 
 public class EntityListLayout {
 
-    private final String _title;
-    private final String _baseAction;
-    private final ResultSet _seminars;
+    private final static List<String> ELEMENTS = Arrays.asList("course", "student");
 
-    public EntityListLayout(String title, String baseAction, ResultSet seminars) {
+    private final String _title;
+    private final String _action;
+    private final List<Map<String, String>> _entities;
+
+    public EntityListLayout(String title, String action, List<Map<String, String>> entities) {
         _title = title;
-        _baseAction = baseAction;
-        _seminars = seminars;
+        _action = action;
+        _entities = entities;
     }
 
-    public Element build() throws SQLException {
+    public Element build() {
         return html5(
             head(
                 meta(attr("charset -> utf-8")),
@@ -90,28 +94,12 @@ public class EntityListLayout {
                         div(attr("class -> row"),
                             div(attr("class -> col-lg-2 col-md-2 col-sm-3"),
                                 div(attr("class -> list-group table-of-contents"),
-                                    a(attr("class -> list-group-item", "href -> "+_baseAction),
-                                        "List"
-                                        ),
-                                    a(attr("class -> list-group-item", "href -> "+_baseAction+"/create"),
-                                        "Create"
-                                        )
+                                    htmlOperations()
                                     )
                                 ),
                             div(attr("class -> col-lg-8 col-md-8 col-sm-9"),
                                 table(attr("class -> table table-striped"),
-                                    thead(
-                                        tr(
-                                            th("name"),
-                                            th("description"),
-                                            th("location"),
-                                            th("totalSeats"),
-                                            th("start")
-                                            )
-                                        ),
-                                    tbody(
-                                        getHtmlSeminars()
-                                        )
+                                    getHtmlTable()
                                     )
                                 )
                             )
@@ -141,31 +129,84 @@ public class EntityListLayout {
         );
     }
 
-    private Iterable<Element> getHtmlSeminars() throws SQLException {
-        Collection<Element> htmlSeminars = new ArrayList<>();
+    private Iterable<Element> htmlOperations() {
+        List<Element> result = new ArrayList<>();
+        for (String element : ELEMENTS) {
+            result.add(
+                a(attr("class -> list-group-item", "href -> /"+element),
+                    element+" list"
+                    )
+                );
+            result.add(
+                a(attr("class -> list-group-item", "href -> /"+element+"/create"),
+                    "create "+element
+                    )
+                );
+        }
+        return result;
+    }
 
-        while (_seminars.next()) {
-            htmlSeminars.add(
+    private Element getHtmlTable() {
+        Collection<Element> body = new ArrayList<>();
+        for (Map<String, String> entity : _entities) {
+            body.add(getBodyTableContent(entity));
+        }
+        return group(
+            thead(
                 tr(
-                    td(
-                        a(attr("href -> "+_baseAction+"/"+_seminars.getString(1)),
-                            _seminars.getString(2)
-                            )
-                        ),
-                    td(_seminars.getString(3)),
-                    td(_seminars.getString(4)),
-                    td(_seminars.getString(5)),
-                    td(_seminars.getString(6)),
-                    td(
-                        a(attr("href -> "+_baseAction+"/delete/"+_seminars.getString(1), "class -> btn btn-primary btn-xs",
-                            "role -> button", "aria-pressed -> true"),
-                            "delete"
-                            )
-                        )
+                    getHeadTableContent(_entities.get(0))
+                    )
+                ),
+            tbody(
+                tr(
+                    body
+                    )
                 )
             );
+    }
+
+    private Element getBodyTableContent(Map<String, String> entity) {
+        Collection<Element> result = new ArrayList<>();
+        result.add(editButton(entity.get("id"), entity.get("name")));
+        for (Entry<String, String> parameter : entity.entrySet()) {
+            if (!parameter.getKey().equals("id")) {
+                if (!parameter.getKey().equals("name")) {
+                    result.add(
+                        td(parameter.getValue())
+                        );
+                }
+            }
         }
-        return htmlSeminars;
+        result.add(removeButton(entity.get("id")));
+        return tr(result);
+    }
+
+    private Element getHeadTableContent(Map<String, String> entity) {
+        Collection<Element> result = new ArrayList<>();
+        for (Entry<String, String> parameter : entity.entrySet()) {
+            if (!parameter.getKey().equals("id")) {
+                result.add(
+                    th(parameter.getKey())
+                    );
+            }
+        }
+        return tr(result);
+    }
+
+    private Element editButton(String id, String buttonValue) {
+        return td(
+                a(attr("href -> "+_action+"/"+id),
+                    buttonValue)
+                );
+    }
+
+    private Element removeButton(String id) {
+        return td(
+                a(attr("href -> "+_action+"/delete/"+id, "class -> btn btn-primary btn-xs",
+                    "role -> button", "aria-pressed -> true"),
+                    "delete"
+                    )
+                );
     }
 
 }

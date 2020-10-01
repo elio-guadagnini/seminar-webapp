@@ -7,6 +7,14 @@ import java.util.List;
 
 public class Seminar {
 
+    public static final String NAME = "name";
+    public static final String DESCRIPTION = "description";
+    public static final String LOCATION = "location";
+    public static final String SEATS = "seats";
+    public static final String START = "start";
+    public static final List<String> FIELDS = Arrays.asList(NAME, DESCRIPTION, SEATS, LOCATION, START);
+
+
 	private String _location;
 	private int _availableSeats;
 	private final Course _course;
@@ -69,13 +77,14 @@ public class Seminar {
 	    return _enrolments;
 	}
 
-	public List<String> getParams() {
-	    return Arrays.asList(_course.getName(),
-	                         _course.getDescription(),
-	                         _location,
-	                         String.valueOf(_availableSeats),
-	                         _course.getDate());
-	}
+	public List<String> getValues() {
+        return Arrays.asList(
+            _course.getName(),
+            _course.getDescription(),
+            String.valueOf(_availableSeats),
+            _location,
+            _course.getDate());
+    }
 
 	public ArrayList<String> getStudentList() {
 		ArrayList<String> students = new ArrayList<>();

@@ -8,18 +8,11 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.app.controller.course.ControllerCourseUtil;
-import com.app.controller.course.CreateCourseController;
-import com.app.controller.course.CourseListController;
-import com.app.controller.course.CreateCourseController.Fields;
+import com.app.controller.entity.course.CreateCourseController;
+import com.app.entity.seminar.Seminar;
 import com.app.entity.validation.Validator;
 
 public class MainControllerTest {
-
-	@Test
-	public void handlesRoute() {
-		assertTrue(new CourseListController().handles("/"));
-	}
 
 	@Test
 	public void handlesCreateCourseRoute() {
@@ -32,19 +25,19 @@ public class MainControllerTest {
         String[] strings = {"", "", "", "", ""};
         Map<String, String[]> parameters = new LinkedHashMap<>();
         int i=0;
-        for (Fields element : Fields.values()) {
-            parameters.put(element.toString().toLowerCase(), new String[] {strings[i]});
+        for (String element : Seminar.FIELDS) {
+            parameters.put(element, new String[] {strings[i]});
             i++;
         }
 
         Map<String, String> feedbacks = new Validator().feedbacks(
-            new ControllerCourseUtil().getFieldValidation(parameters));
+            new CreateCourseController().getFieldValidation(parameters));
 
         assertThat(feedbacks.size(), is(4));
-        assertThat(feedbacks.get(Fields.NAME.toString().toLowerCase()), is(equalTo("Must be defined!")));
-        assertThat(feedbacks.get(Fields.SEATS.toString().toLowerCase()), is(equalTo("Must be defined! Must be integer! Must be positive! Must be less than a threshold (100)!")));
-        assertThat(feedbacks.get(Fields.LOCATION.toString().toLowerCase()), is(equalTo("Must be defined!")));
-        assertThat(feedbacks.get(Fields.START.toString().toLowerCase()), is(equalTo("Must be defined! Must have standard format: (dd.MM.yyyy)!")));
+        assertThat(feedbacks.get(Seminar.NAME), is(equalTo("Must be defined!")));
+        assertThat(feedbacks.get(Seminar.SEATS), is(equalTo("Must be defined! Must be integer! Must be positive! Must be less than a threshold (100)!")));
+        assertThat(feedbacks.get(Seminar.LOCATION), is(equalTo("Must be defined!")));
+        assertThat(feedbacks.get(Seminar.START), is(equalTo("Must be defined! Must have standard format: (dd.MM.yyyy)!")));
 	}
 
 	@Test
@@ -53,17 +46,17 @@ public class MainControllerTest {
 	    String[] strings = {"", "", "2", "", "11.02.2020"};
 	    Map<String, String[]> parameters = new LinkedHashMap<>();
 	    int i=0;
-	    for (Fields element : Fields.values()) {
-	        parameters.put(element.toString().toLowerCase(), new String[] {strings[i]});
+	    for (String element : Seminar.FIELDS) {
+	        parameters.put(element, new String[] {strings[i]});
 	        i++;
 	    }
 
 	    Map<String, String> feedbacks = new Validator().feedbacks(
-            new ControllerCourseUtil().getFieldValidation(parameters));
+            new CreateCourseController().getFieldValidation(parameters));
 
         assertThat(feedbacks.size(), is(2));
-        assertThat(feedbacks.get(Fields.NAME.toString().toLowerCase()), is(equalTo("Must be defined!")));
-        assertThat(feedbacks.get(Fields.LOCATION.toString().toLowerCase()), is(equalTo("Must be defined!")));
+        assertThat(feedbacks.get(Seminar.NAME), is(equalTo("Must be defined!")));
+        assertThat(feedbacks.get(Seminar.LOCATION), is(equalTo("Must be defined!")));
 	}
 
 	@Test
@@ -72,18 +65,18 @@ public class MainControllerTest {
 	    String[] strings = {"ciaoo123456789017", "", "2", "", ""};
 	    Map<String, String[]> parameters = new LinkedHashMap<>();
 	    int i=0;
-	    for (Fields element : Fields.values()) {
-	        parameters.put(element.toString().toLowerCase(), new String[] {strings[i]});
+	    for (String element : Seminar.FIELDS) {
+	        parameters.put(element, new String[] {strings[i]});
 	        i++;
 	    }
 
 	    Map<String, String> feedbacks = new Validator().feedbacks(
-            new ControllerCourseUtil().getFieldValidation(parameters));
+            new CreateCourseController().getFieldValidation(parameters));
 
         assertThat(feedbacks.size(), is(3));
-        assertThat(feedbacks.get(Fields.NAME.toString().toLowerCase()), is(equalTo("Must be max 15 characters")));
-        assertThat(feedbacks.get(Fields.LOCATION.toString().toLowerCase()), is(equalTo("Must be defined!")));
-        assertThat(feedbacks.get(Fields.START.toString().toLowerCase()), is(equalTo("Must be defined! Must have standard format: (dd.MM.yyyy)!")));
+        assertThat(feedbacks.get(Seminar.NAME), is(equalTo("Must be max 15 characters")));
+        assertThat(feedbacks.get(Seminar.LOCATION), is(equalTo("Must be defined!")));
+        assertThat(feedbacks.get(Seminar.START), is(equalTo("Must be defined! Must have standard format: (dd.MM.yyyy)!")));
 	}
 
 	@Test
@@ -92,18 +85,18 @@ public class MainControllerTest {
 	    String[] strings = {"ciao", "", "102", "", ""};
 	    Map<String, String[]> parameters = new LinkedHashMap<>();
 	    int i=0;
-	    for (Fields element : Fields.values()) {
-	        parameters.put(element.toString().toLowerCase(), new String[] {strings[i]});
+	    for (String element : Seminar.FIELDS) {
+	        parameters.put(element, new String[] {strings[i]});
 	        i++;
 	    }
 
 	    Map<String, String> feedbacks = new Validator().feedbacks(
-	        new ControllerCourseUtil().getFieldValidation(parameters));
+	        new CreateCourseController().getFieldValidation(parameters));
 
 	    assertThat(feedbacks.size(), is(3));
-	    assertThat(feedbacks.get(Fields.SEATS.toString().toLowerCase()), is(equalTo("Must be less than a threshold (100)!")));
-	    assertThat(feedbacks.get(Fields.LOCATION.toString().toLowerCase()), is(equalTo("Must be defined!")));
-	    assertThat(feedbacks.get(Fields.START.toString().toLowerCase()), is(equalTo("Must be defined! Must have standard format: (dd.MM.yyyy)!")));
+	    assertThat(feedbacks.get(Seminar.SEATS), is(equalTo("Must be less than a threshold (100)!")));
+	    assertThat(feedbacks.get(Seminar.LOCATION), is(equalTo("Must be defined!")));
+	    assertThat(feedbacks.get(Seminar.START), is(equalTo("Must be defined! Must have standard format: (dd.MM.yyyy)!")));
 	}
 
 	@Test
@@ -112,17 +105,17 @@ public class MainControllerTest {
 	    String[] strings = {"ciao", "", "2", "", ""};
 	    Map<String, String[]> parameters = new LinkedHashMap<>();
 	    int i=0;
-	    for (Fields element : Fields.values()) {
-	        parameters.put(element.toString().toLowerCase(), new String[] {strings[i]});
+	    for (String element : Seminar.FIELDS) {
+	        parameters.put(element, new String[] {strings[i]});
 	        i++;
 	    }
 
 	    Map<String, String> feedbacks = new Validator().feedbacks(
-            new ControllerCourseUtil().getFieldValidation(parameters));
+            new CreateCourseController().getFieldValidation(parameters));
 
         assertThat(feedbacks.size(), is(2));
-        assertThat(feedbacks.get(Fields.LOCATION.toString().toLowerCase()), is(equalTo("Must be defined!")));
-        assertThat(feedbacks.get(Fields.START.toString().toLowerCase()), is(equalTo("Must be defined! Must have standard format: (dd.MM.yyyy)!")));
+        assertThat(feedbacks.get(Seminar.LOCATION), is(equalTo("Must be defined!")));
+        assertThat(feedbacks.get(Seminar.START), is(equalTo("Must be defined! Must have standard format: (dd.MM.yyyy)!")));
 	}
 
 	@Test
@@ -131,13 +124,13 @@ public class MainControllerTest {
 	    String[] strings = {"sw eng", "sw eng desc", "2", "lugano", "01.01.2000"};
 	    Map<String, String[]> parameters = new LinkedHashMap<>();
 	    int i=0;
-	    for (Fields element : Fields.values()) {
-	        parameters.put(element.toString().toLowerCase(), new String[] {strings[i]});
+	    for (String element : Seminar.FIELDS) {
+	        parameters.put(element, new String[] {strings[i]});
 	        i++;
 	    }
 
 	    Map<String, String> feedbacks = new Validator().feedbacks(
-	        new ControllerCourseUtil().getFieldValidation(parameters));
+	        new CreateCourseController().getFieldValidation(parameters));
 
 	    assertThat(feedbacks.size(), is(0));
 	}

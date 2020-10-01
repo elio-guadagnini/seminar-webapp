@@ -17,7 +17,8 @@ public class EntityFormLayout {
     private final String _action;
     private final String _title;
 
-    public EntityFormLayout(String title, Map<String, String[]> parameters, Map<String, String> feedbacks, String action) {
+    public EntityFormLayout(String title, Map<String, String[]> parameters,
+        Map<String, String> feedbacks, String action) {
         _parameters = parameters;
         _feedbacks = feedbacks;
         _action = action;
@@ -41,7 +42,7 @@ public class EntityFormLayout {
                     div(attr("class -> row"),
                         div(attr("class -> col-md-6 col-md-offset-3"),
                             h1(attr("class -> page-header text-center"),
-                                _title + " Form Example"
+                                "Entity Form"
                             ),
                             form(attr("id -> createCourseForm", "class -> form-horizontal has-feedback",
                                     "role -> form", "method -> post", "action -> " + _action),
